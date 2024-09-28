@@ -4,13 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-
 
 int main() {
     int id = 50;
     key_t key = ftok(".", id); // キーの生成
-    int msqid = msgget(key, IPC_CREAT | 0666); // メッセージキューの作成
+    int msqid = msgget(key, 0666);
 
     if (msqid == -1) {
         perror("msgget");
@@ -25,10 +23,6 @@ int main() {
         perror("msgsnd");
         exit(1);
     }
-
-    sleep(10);
-
-    msgctl(msqid, IPC_RMID, NULL); // メッセージキューの削除
 
     return 0;
 }
